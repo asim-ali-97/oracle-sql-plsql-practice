@@ -102,3 +102,80 @@ select * from as_employees;
 insert into as_employees
 (emp_id, first_name, last_name, dept_id, salary)
 values (1008, 'Sana', 'Ali', 2, 49000);
+
+
+
+
+--Delete
+select * from as_employees;
+delete from as_employees where first_name = 'Aga';
+delete as_employees where salary = 40000;
+delete from (select * from as_employees where salary > 35000);
+
+select * from as_departments;
+delete from as_departments where name = 'Admin'; --throw error
+--NOTE --> we have to commit after each DML statement
+-- while oracle auto commit before and after DDL statement
+
+--Merge Statement    
+select * from employees_source;
+select * from employees_target;
+insert into employees_source (empid, empname, salary)
+values (5, 'John Snow', 100000);
+
+
+merge into employees_target trgt
+using employees_source src
+on (trgt.empid = src.empid)
+when matched then
+    update set trgt.salary = src.salary
+when not matched then
+    insert (empid, empname, salary)
+    values (src.empid, src.empname, src.salary);
+
+
+merge into employees_target tr
+using (select empid,empname,salary from employees_source) sr
+on (tr.empid = sr.empid)
+when matched then 
+    update set tr.salary = sr.salary
+when not matched then 
+    insert (empid, empname, salary) 
+    values (sr.empid, sr.empname,sr.salary);
+    
+select * from employees_target;
+select * from employees_source;
+insert into employes_source values(7,'Bajwa Munir', 30000);
+select * from user_sequences;
+
+--diff b/w drop, delete and truncate
+create table sample_table
+(col1 number, col2 varchar2(50));
+
+insert into sample_table values (1, 'one');
+insert into sample_table values (2, 'two');
+insert into sample_table values (3, 'three');
+insert into sample_table values (4, 'four');
+
+select * from sample_table;
+
+delete from sample_table; --deletes data that can be rolled back
+truncate table sample_table; -- drops and recreates table data cant be rolled back
+drop table sample_table;
+
+create table sample_table_child 
+(col1 number, col2 number);
+
+alter table sample_table modify col1 primary key;
+desc sample_table;
+
+alter table sample_table_child 
+add constraint FK_sample_child_sample_table 
+foreign key (col1) references sample_table(col1);
+
+drop table sample_table; -- cant drop it because of the FK
+drop table sample_table cascade constraints;
+truncate table sample_table;
+
+select * from sample_table;
+select * from sample_table_child;
