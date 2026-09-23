@@ -69,3 +69,11 @@ union
 select sales_person_id, first_name, last_name, 'JOINING DATE' as date_type, joining_date from as_sales_persons
 union
 select sales_person_id, first_name, last_name, 'LEAVING DATE' as date_type, leaving_date from as_sales_persons;
+
+
+-- All users (one column only, one entry per user) controlling the product data
+select * from
+(select created_by as User_Name from as_products
+union
+select last_updated_by from as_products)
+where User_Name is not null;
