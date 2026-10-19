@@ -1,4 +1,4 @@
--- TRIGGER --> ROW-LEVEL, STATEMENT-LEVEL
+-- TRIGGER --> ROW-LEVEL, STATEMENT-LEVEL, COMPOUND-TRIGGER
 
 --✅ When should you use a trigger
 --		Use a trigger when the database itself needs to guarantee something automatically whenever a particular database event occurs.
